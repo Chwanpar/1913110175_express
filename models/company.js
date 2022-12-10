@@ -6,9 +6,9 @@ const companySchema = new Schema({
   name:  String, // String is shorthand for {type: String}
  
   address: {
-    provice:  String,
+    province:  String,
   }
-},{collection:"setting"});
+},{collection:"setting"},{collection:"companys"});
 
 
 const company = mongoose.model("Companys",companySchema)
