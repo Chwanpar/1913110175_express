@@ -21,5 +21,4 @@ await staff.save()
   res.status(200).json({
       message:'เพิ่มข้อมูลเรียบร้อยแล้ว',
     })
-  
 }
