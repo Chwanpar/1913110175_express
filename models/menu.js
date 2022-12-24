@@ -10,12 +10,15 @@ const Schema = new Schema({
   
 //   createdAt: {type: Date, default:Date.now},
 //   updateAt: {type: Date, default:Date.now}
-},{
-    timestamps:true,
-    collection:"menus"
-});
+},
+    { toJSON: { virtuals: true }, collection: 'menus', timestamps: true }
+    )
+;
 
+schema.virtual('price_vat').get(function(){
+    return(this.price*1.07)+this.price
+})
 
-const shop = mongoose.model("Menu",Schema)
+const menu = mongoose.model("Menu",Schema)
 
 module.exports = menu
