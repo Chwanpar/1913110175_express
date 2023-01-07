@@ -2,17 +2,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-const mongoose=require('mongoose')
+const mongoose=require('mongoose');
+const config=require('./config/index');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var CompanyRouter = require('./routes/company');
 const StaffRouter = require('./routes/staffRouter');
+const shopController = require('./routes/shop');
 
 var app = express();
 
-mongoose.connect('mongodb+srv://superdev:1913110175@1913110175-bam.50lb0pu.mongodb.net/Restfulapi?retryWrites=true&w=majority',
+mongoose.connect(config.MONGODB_URI,
 {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(logger('dev'));
@@ -25,4 +26,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/company', CompanyRouter);
 app.use('/staff', StaffRouter);
+app.use('/shop', shopController);
+app.use('/menu', shopController);
 module.exports = app;

@@ -1,4 +1,6 @@
+const { config } = require("dotenv");
 const Shop  = require("../models/shop");
+const con = require("../config");
 
 exports.Shop = async (req, res, next) => {
   const shops = await Shop.find().select('name photo location').sort({_id:-1});
@@ -6,7 +8,7 @@ const shopwithPhotoDomain = shops.map((shop,index) => {
     return{
         id: shop._id,
         name: shop.name,
-        photo: 'http://localhost:3000/images/' + shop.photo,
+        photo: `${con.DOMAIN}${shop.photo}`,
         location: shop.location
 
     }
