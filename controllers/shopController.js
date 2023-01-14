@@ -52,7 +52,7 @@ exports.menu = async (req , res) => {
       }
     }
 
-    exports.show = async (req, res) => {
+    exports.show = async (req, res) =>  {
         try {
           const shop = await shop.findById(req.params.id).populate('menus')
           if (!shop) throw new Error('ไม่พบข้อมูล')

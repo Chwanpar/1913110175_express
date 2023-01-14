@@ -35,8 +35,10 @@ exports.register = async (req, res, next) => {
   res.status(200).json({
     message: "Hello",
   });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    const error =  new Error(`Error: ${e.message}`)
+        error.statusCode = 404
+        next(error);
   }
 
   

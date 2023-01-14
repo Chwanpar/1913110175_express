@@ -87,8 +87,10 @@ exports.update = async (req, res) => {
     const staff = await Staff.updateOne({ _id: id }, { name, salary })
     if (staff.matchedCount === 0) throw new Error('staff not found')
     res.status(200).json({ message: 'staff updated successfully' })
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    const error =  new Error(`Error: ${e.message}`)
+        error.statusCode = 404
+        next(error);
   }
 }
 
