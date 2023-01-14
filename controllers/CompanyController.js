@@ -15,7 +15,9 @@ exports.show = async (req, res) => {
     if (!company) throw new Error('ไม่พบข้อมูล')
     res.send({ data: company })
   } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+    const error =  new Error(`Error: ${e.message}`)
+    error.statusCode = 404
+    next(error);
   }
 }
 
@@ -26,7 +28,9 @@ exports.insert = async (req, res) => {
     await company.save()
     res.status(201).json({ message: 'เพิ่มข้อมูลสำเร็จ' })
   } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+    const error =  new Error(`Error: ${e.message}`)
+    error.statusCode = 404
+    next(error);
   }
 }
 
@@ -38,7 +42,9 @@ exports.update = async (req, res) => {
     if (company.matchedCount === 0) throw new Error('ไม่พบข้อมูลบริษัท')
     res.status(200).json({ message: 'อัพเดทข้อมูลบริษัทสำเร็จ' })
   } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+    const error =  new Error(`Error: ${e.message}`)
+        error.statusCode = 404
+        next(error);
   }
 }
 
@@ -49,6 +55,8 @@ exports.destroy = async (req, res) => {
     if (company.deletedCount === 0) throw new Error('ไม่พบข้อมูลบริษัท')
     res.status(200).json({ message: 'ลบข้อมูลบริษัทสำเร็จ' })
   } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+    const error =  new Error(`Error: ${e.message}`)
+    error.statusCode = 404
+    next(error);
   }
 }

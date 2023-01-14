@@ -53,7 +53,9 @@ exports.show = async (req, res) => {
     if (!staff) throw new Error('staff not found')
     res.send({ data: staff })
   } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+    const error =  new Error(`Error: ${e.message}`)
+    error.statusCode = 404
+    next(error);
   }
 }
 
@@ -71,8 +73,10 @@ exports.insert = async (req, res) => {
     )
     await staff.save()
     res.status(201).json({ message: 'staff added successfully' })
-  } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+  }catch (err) {
+    const error =  new Error(`Error: ${e.message}`)
+    error.statusCode = 404
+    next(error);
   }
 }
 
@@ -83,8 +87,8 @@ exports.update = async (req, res) => {
     const staff = await Staff.updateOne({ _id: id }, { name, salary })
     if (staff.matchedCount === 0) throw new Error('staff not found')
     res.status(200).json({ message: 'staff updated successfully' })
-  } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -95,7 +99,9 @@ exports.destroy = async (req, res) => {
     if (staff.deletedCount === 0) throw new Error('staff not found')
     res.status(200).json({ message: 'staff deleted successfully' })
   } catch (err) {
-    res.status(404).json({ message: 'error : ' + err.message })
+    const error =  new Error(`Error: ${e.message}`)
+        error.statusCode = 404
+        next(error);
   }
 }
 
