@@ -6,8 +6,9 @@ const userController = require('../controllers/userController')
 router.get('/', userController.index);
 
 
-router.get('/bio',userController.bio );
+router.get('/',userController.bio );
 
+router.post('/'),userController.register ;
 
 
 
