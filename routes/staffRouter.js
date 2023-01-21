@@ -1,6 +1,15 @@
 var express = require('express');
 var router = express.Router();
-const StaffController = require('../controllers/staffController')
-router.get('/',StaffController.index);
-router.post('/',StaffController.insert);
+
+const companyController = require('../controllers/companyController')
+
+
+router.get('/', companyController.index)
+router.get('/:id', companyController.show)
+router.post('/', companyController.insert)
+router.put('/:id', companyController.update)
+router.delete('/:id', companyController.destroy)
+
+
 module.exports = router;
+
