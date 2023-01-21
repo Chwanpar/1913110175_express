@@ -1,6 +1,7 @@
 const { config } = require("dotenv");
 const Shop  = require("../models/shop");
 const con = require("../config");
+const { validationResult } = require("express-validator");
 
 const fs = require('fs');
 const path = require('path');
@@ -38,6 +39,30 @@ exports.menu = async (req , res) => {
       // add data to database
       const { name, location,photo } = req.body
       const shop = new Shop({ name,location,photo })
+      //validation
+      const errors = validationResult(req);
+      try{if (!errors.isEmpty()) {
+        const error = new Error("Input is incorrect");
+        error.statusCode = 422;
+        error.validation = errors.array();
+        throw error;
+      }
+      const photoName = photo ? await saveImageToDisk(photo) : undefined;
+      let shopinsert = shop({
+        name: name,
+        location: location,
+        photo: photoName,
+      });
+      const result = await shopinsert.save();
+      return res
+        .status(201)
+        .json({ message: `Insert Successful: ${result != null}` });
+    } catch (e) {
+      next(e);
+    };
+
+    
+
       await shop.save()
       res.status(201).json({ message: 'staff added successfully' })
       try {

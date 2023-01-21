@@ -30,7 +30,7 @@ const uuidv4 = require('uuid');
 const { promisify } = require('util');
 const writeFileAsync = promisify(fs.writeFile);
 const config = require('../config/index');
-
+const { validationResult } = require("express-validator");
 
 
 exports.index = async (req, res) => {
@@ -61,22 +61,46 @@ exports.show = async (req, res) => {
 
 exports.insert = async (req, res) => {
   // add data to database
-  const { name, salary, photo } = req.body
-  const staff = new Staff({ name, salary, photo: photo && (await saveImageToDisk(photo)) })
-  await staff.save()
-  res.status(201).json({ message: 'staff added successfully' })
+  // const { name, salary, photo } = req.body
+  // const staff = new Staff({ name, salary, photo: photo && (await saveImageToDisk(photo)) })
+
+  // await staff.save()
+  // res.status(201).json({ message: 'staff added successfully' })
+  // try {
+  //   const { name, salary, photo } = req.body
+  //   const staff = await Staff.updateOne(
+  //     { _id: id },
+  //     { name, salary, photo: photo && (await saveImageToDisk(photo)) }
+  //   )
+  //   await staff.save()
+  //   res.status(201).json({ message: 'staff added successfully' })
+  // }catch (err) {
+  //   const error =  new Error(`Error: ${e.message}`)
+  //   error.statusCode = 404
+  //   next(error);
+  // }
   try {
-    const { name, salary, photo } = req.body
-    const staff = await Staff.updateOne(
-      { _id: id },
-      { name, salary, photo: photo && (await saveImageToDisk(photo)) }
-    )
-    await staff.save()
-    res.status(201).json({ message: 'staff added successfully' })
-  }catch (err) {
-    const error =  new Error(`Error: ${e.message}`)
-    error.statusCode = 404
-    next(error);
+    const { name, salary, photo } = req.body;
+    // Validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("Input is incorrect");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
+    const photoName = photo ? await saveImageToDisk(photo) : undefined;
+    let staffinsert = staff({
+      name: name,
+      salary: salary,
+      photo: photoName,
+    });
+    const result = await staffinsert.save();
+    return res
+      .status(200)
+      .json({ message: `Insert Successful: ${result != null}` });
+  } catch (e) {
+    next(e);
   }
 }
 
