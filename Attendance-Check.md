@@ -1,1 +1,1 @@
-Chwanpar Kodchwanpar (Bam) : กํารใช้งาน Environment ใน Node.js และการทำระบบ Login
+Chwanpar Kodchwanpar (Bam) : การทำระบบล็อกอินตามมาตรฐาน JSON Web Token ดว้ย Passport.js และ กํารตรวจสอบความถูกต้องของข้อมูล(Validation) 
