@@ -15,7 +15,7 @@ router.post('/',[
     body('password').not().isEmpty().withMessage("กรุณากรอกรหัสผ่านด้วย").isLength({min: 5}).withMessage("รหัสผ่านต้องมีค่ามากกว่า5ตัวอักษรขึ้นไป")
 ],userController.register) ;
 
-router.get('/me',[passportJWT.isLogin],userController.profile)
+router.get('/me',[passportJWT.islogin],userController.profile)
 
 
 router.post('/log',[
